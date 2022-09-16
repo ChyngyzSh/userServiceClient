@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         StatusHistory history = new StatusHistory();
         history.setId(history.getId());
         history.setUser(user);
-        history.setCurrentStatus(user.getStatus());
+        history.setCurrentStatus(userDto.getStatus());
         history.setStartDate(new Date());
         System.out.println(history);
         statusHistoryRepo.save(history);
