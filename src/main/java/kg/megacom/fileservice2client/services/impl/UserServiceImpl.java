@@ -2,6 +2,7 @@ package kg.megacom.fileservice2client.services.impl;
 
 import kg.megacom.fileservice2client.dao.StatusHistoryRepo;
 import kg.megacom.fileservice2client.dao.UserRepo;
+import kg.megacom.fileservice2client.exceptions.UserException;
 import kg.megacom.fileservice2client.mappers.UserMapper;
 import kg.megacom.fileservice2client.microservices.FileServiceFeign;
 import kg.megacom.fileservice2client.microservices.json.ResponseFile;
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
     public UpdateUserResponse update(Long userId, UserStatus userStatus) {
 
         if(getById(userId).equals(false)){
-            new RuntimeException("Пользователь не найден!");
+            new UserException("Пользователь не найден!");
         }
         User user = getById(userId);
         user.setStatus(userStatus);
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
         calendar.add(Calendar.MINUTE, -1);
         //отнимаю 1 минуту, чтобы в базе указать дату завершения прошлого сеанса
         if(userStatus == statusHistoryOld.getCurrentStatus()){
-            throw new RuntimeException("Статус прежний, выберите другой");
+            throw new UserException("Статус прежний, выберите другой");
         }else {
             statusHistoryOld.setEndDate(calendar.getTime());// указываем в пред.записи дату закрытия
             statusHistoryRepo.save(statusHistoryOld);

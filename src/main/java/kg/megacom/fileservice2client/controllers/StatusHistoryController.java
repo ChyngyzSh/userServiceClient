@@ -22,7 +22,7 @@ public class StatusHistoryController {
 //5-пункт
     @GetMapping("/find/all")
     public ResponseByStatus getAllByStatus(@RequestParam UserStatus status, @RequestParam(required = false)
-        @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
+        @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date date){
 
         return statusHistoryService.getAllUsersByStatus(status, date);
     }
