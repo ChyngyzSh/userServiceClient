@@ -15,7 +15,7 @@ import kg.megacom.fileservice2client.services.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Calendar;
+import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
     private final StatusHistoryRepo statusHistoryRepo;
     private final UserMapper userMapper;
     private final FileServiceFeign fileServiceFeign;
-
 
     public UserServiceImpl(UserRepo userRepo, StatusHistoryRepo statusHistoryRepo,
                            FileServiceFeign fileServiceFeign) {
@@ -45,8 +44,7 @@ public class UserServiceImpl implements UserService {
         history.setId(history.getId());
         history.setUser(user);
         history.setCurrentStatus(userDto.getStatus());
-        history.setStartDate(new Date());
-        System.out.println(history);
+        history.setStartDate(new Timestamp(new Date().getTime()));
         statusHistoryRepo.save(history);
         return userMapper.toDto(user);
     }
@@ -64,7 +62,7 @@ public class UserServiceImpl implements UserService {
     //3
     @Override
     public User getById(Long id) {
-        return userRepo.findById(id).orElseThrow(()-> new RuntimeException("Пользователь не найден!"));
+        return userRepo.findById(id).orElseThrow(()-> new UserException("Пользователь не найден!"));
     }
 
     //4 - спец объект, где указываю только userId, предыдущий статус и текущий
@@ -79,20 +77,19 @@ public class UserServiceImpl implements UserService {
         user = userRepo.save(user);
         //при каждом обновлении статуса обновляю также Статус в таблице Users
 
-        Calendar calendar = Calendar.getInstance();
         //перед сохранением нахожу последнюю запись, и сохраняю статус в переменной
         StatusHistory statusHistoryOld = statusHistoryRepo.findByUserIdPrevStatus(user.getId());
-        calendar.add(Calendar.MINUTE, -1);
-        //отнимаю 1 минуту, чтобы в базе указать дату завершения прошлого сеанса
+
         if(userStatus == statusHistoryOld.getCurrentStatus()){
             throw new UserException("Статус прежний, выберите другой");
         }else {
-            statusHistoryOld.setEndDate(calendar.getTime());// указываем в пред.записи дату закрытия
+            statusHistoryOld.setEndDate(new Timestamp(new Date().getTime()-60000));
+            // указываем в пред.записи дату закрытия, отнимаю 60 тыс миллисек, это 1 мин
             statusHistoryRepo.save(statusHistoryOld);
-            calendar.add(Calendar.MINUTE, 1);//добавляю обратно минуту, и записываю новые данные
+            //calendar.add(Calendar.MINUTE, 1);//добавляю обратно минуту, и записываю новые данные
             StatusHistory statusHistory = new StatusHistory();
             statusHistory.setCurrentStatus(userStatus);
-            statusHistory.setStartDate(calendar.getTime());
+            statusHistory.setStartDate(new Timestamp(new Date().getTime()));
             statusHistory.setUser(user);
             statusHistoryRepo.save(statusHistory);
         }

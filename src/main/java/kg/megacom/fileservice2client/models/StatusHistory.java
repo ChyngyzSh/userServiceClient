@@ -5,7 +5,9 @@ import kg.megacom.fileservice2client.models.dto.UserDto;
 import kg.megacom.fileservice2client.models.enums.UserStatus;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Value;
 import lombok.experimental.FieldDefaults;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -31,5 +33,6 @@ public class StatusHistory {
     Date startDate;
     @DateTimeFormat(pattern =  "yyyy-MM-dd'T'HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     Date endDate;
 }

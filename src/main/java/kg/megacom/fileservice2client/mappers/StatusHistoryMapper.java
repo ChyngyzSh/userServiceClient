@@ -17,15 +17,6 @@ public interface StatusHistoryMapper {
     StatusHistoryDto toDto(StatusHistory user);
 
     List<StatusHistory> toEntities(List<StatusHistoryDto>statusHistoryDtos);
-
     List<StatusHistoryDto> toDtos(List<StatusHistory>statusHistories);
 
-
-
 }
-
-//E toEntity(D d);
-//    D toDto(E e);
-//
-//    List<E> toEntities(List<D>d);
-//    List<D> toDtos(List<E>e);

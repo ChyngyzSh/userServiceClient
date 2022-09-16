@@ -12,5 +12,4 @@ public class ResponseFile {
     private String downloadUri;
     private String fileType;
     private long size;
-
 }

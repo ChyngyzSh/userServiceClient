@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
 public class StatusHistoryDto {
     Long id;
     UserDto user;

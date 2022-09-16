@@ -12,12 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class UserDto {
     Long id;
-
     String name;
-
     String imageUrl;
-    @JsonIgnore
     String email;
-
     UserStatus status;
 }
