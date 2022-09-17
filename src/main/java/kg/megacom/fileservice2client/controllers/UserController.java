@@ -3,15 +3,10 @@ package kg.megacom.fileservice2client.controllers;
 import kg.megacom.fileservice2client.models.User;
 import kg.megacom.fileservice2client.models.dto.UserDto;
 import kg.megacom.fileservice2client.models.enums.UserStatus;
-import kg.megacom.fileservice2client.responses.ResponseByStatus;
 import kg.megacom.fileservice2client.responses.UpdateUserResponse;
 import kg.megacom.fileservice2client.services.UserService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/user")

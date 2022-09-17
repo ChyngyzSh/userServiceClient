@@ -47,7 +47,7 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
         }
         ResponseByStatus response = new ResponseByStatus();
         response.setStatusList(statusHistoryMapper.toDtos(statusHistories));
-        response.setRequestDate(timestamp);
+        response.setRequestCurrentStamp(timestamp.getTime());
         return response;
     }
 
